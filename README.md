@@ -33,6 +33,3 @@ Clone or download this repository to your local machine
 Disclaimer
 
 Drine is an informational and entertainment platform for video streaming. The platform is for educational and entertainment use only, and users are encouraged to use it responsibly.
-
-```bash
-git clone https://github.com/yourusername/drine.git
