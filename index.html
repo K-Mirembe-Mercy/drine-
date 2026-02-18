@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drine – Stream Videos</title>
+<style>
+  body { font-family: Arial, sans-serif; margin:0; background:#f9f9f9; color:#333; }
+  header { background:#1db954; color:white; padding:20px 10px; text-align:center; position:sticky; top:0; z-index:1000; }
+  nav { text-align:center; background:#d4f1e0; padding:10px 0; position:sticky; top:60px; z-index:1000; }
+  nav a { margin:0 15px; text-decoration:none; color:#333; font-weight:bold; }
+  nav a:hover { color:#1db954; }
+  section { padding:20px 10px; max-width:1000px; margin:auto; }
+  h1,h2 { color:#1db954; }
+  .category-buttons { text-align:center; margin-bottom:20px; }
+  .category-buttons button { margin:5px; padding:8px 15px; border:none; border-radius:5px; cursor:pointer; background:#1db954; color:white; }
+  .category-buttons button:hover { background:#14833b; }
+  #searchBar { width:90%; max-width:400px; padding:8px; margin:10px auto; display:block; border-radius:5px; border:1px solid #ccc; }
+  .video-feed { display:flex; flex-direction:column; gap:20px; }
+  .card { background:white; padding:10px; border-radius:8px; box-shadow:0 0 5px rgba(0,0,0,0.1); transition:transform 0.2s; }
+  .card:hover { transform:scale(1.01); }
+  iframe { width:100%; height:300px; border-radius:5px; }
+  .video-info { display:flex; justify-content:space-between; align-items:center; margin-top:5px; }
+  .like-btn { background:#1db954; color:white; border:none; border-radius:5px; padding:5px 10px; cursor:pointer; }
+  .like-btn:hover { background:#14833b; }
+  footer { text-align:center; padding:15px; background:#1db954; color:white; margin-top:20px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Drine</h1>
+  <p>Stream Tutorials, Vlogs, and Music Videos</p>
+</header>
+
+<nav>
+  <a href="#feed">Feed</a>
+  <a href="#about">About</a>
+</nav>
+
+<section id="feed">
+  <h2>Video Feed</h2>
+  <input type="text" id="searchBar" placeholder="Search videos..." onkeyup="searchVideos()">
+  <div class="category-buttons">
+    <button onclick="filterCategory('All')">All</button>
+    <button onclick="filterCategory('Tutorial')">Tutorial</button>
+    <button onclick="filterCategory('Vlog')">Vlog</button>
+    <button onclick="filterCategory('Music')">Music</button>
+  </div>
+  <div class="video-feed" id="videoFeed">
+    <!-- Video Cards injected by JavaScript -->
+  </div>
+</section>
+
+<section id="about">
+  <h2>About Drine</h2>
+  <p>Drine is a legal, safe video platform designed to stream tutorials, vlogs, and music videos. Features a vertical scrolling feed, like buttons, view counters, search, and categories—similar to TikTok or YouTube. Explore, watch, and enjoy free streaming anywhere.</p>
+</section>
+
+<footer>
+  <p>&copy; 2026 Drine | Legal, Safe, and Free Streaming</p>
+</footer>
+
+<script>
+  // Video Data
+  const videos = [
+    {title:"HTML Tutorial", category:"Tutorial", url:"https://www.youtube.com/embed/pQN-pnXPaVg", likes:0, views:0},
+    {title:"Travel Vlog 2023", category:"Vlog", url:"https://www.youtube.com/embed/ysz5S6PUM-U", likes:0, views:0},
+    {title:"Relaxing Music", category:"Music", url:"https://www.youtube.com/embed/2Vv-BfVoq4g", likes:0, views:0},
+    {title:"JavaScript Basics", category:"Tutorial", url:"https://www.youtube.com/embed/W6NZfCO5SIk", likes:0, views:0},
+    {title:"Daily Vlog", category:"Vlog", url:"https://www.youtube.com/embed/ScMzIvxBSi4", likes:0, views:0},
+    {title:"Top Hits 2023", category:"Music", url:"https://www.youtube.com/embed/kJQP7kiw5Fk", likes:0, views:0}
+  ];
+
+  const feed = document.getElementById('videoFeed');
+
+  function renderVideos(list){
+    feed.innerHTML = '';
+    list.forEach((v,i)=>{
+      const card = document.createElement('div');
+      card.className='card';
+      v.views++;
+      card.innerHTML=`
+        <iframe src="${v.url}" frameborder="0" allowfullscreen></iframe>
+        <div class="video-info">
+          <h3>${v.title}</h3>
+          <span>${v.views} views</span>
+        </div>
+        <div class="video-info">
+          <button class="like-btn" onclick="likeVideo(${i})">❤️ Like (${v.likes})</button>
+          <span>Category: ${v.category}</span>
+        </div>
+      `;
+      feed.appendChild(card);
+    });
+  }
+
+  function likeVideo(index){
+    videos[index].likes++;
+    renderVideos(currentList);
+  }
+
+  let currentList = [...videos];
+  function filterCategory(cat){
+    if(cat==='All') currentList=[...videos];
+    else currentList = videos.filter(v=>v.category===cat);
+    renderVideos(currentList);
+  }
+
+  function searchVideos(){
+    const query = document.getElementById('searchBar').value.toLowerCase();
+    currentList = videos.filter(v=>v.title.toLowerCase().includes(query));
+    renderVideos(currentList);
+  }
+
+  // Initial render
+  renderVideos(currentList);
+</script>
+
+</body>
+</html>
